@@ -19,4 +19,8 @@ public class SpringbootCafeApplication {
         return String.format("Hello %s!", name);
     }
 
+	@GetMapping("/res")
+	public String res(@RequestParam(value = "haha", defaultValue = "World") String name) {
+		return String.format("Hello %s!", name);
+	}
 }
