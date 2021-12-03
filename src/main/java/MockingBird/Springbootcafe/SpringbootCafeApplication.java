@@ -23,4 +23,5 @@ public class SpringbootCafeApplication {
 	public String res(@RequestParam(value = "haha", defaultValue = "World") String name) {
 		return String.format("Hello %s!", name);
 	}
+
 }
