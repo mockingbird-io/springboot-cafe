@@ -29,4 +29,8 @@ public class SpringbootCafeApplication {
         return String.format("Hello %s!", name);
     }
 
+    @GetMapping("/lazys")
+    public String format(@RequestParam(value = "format", defaultValue = "return") String name) {
+        return String.format("Hello %s!", name);
+    }
 }
