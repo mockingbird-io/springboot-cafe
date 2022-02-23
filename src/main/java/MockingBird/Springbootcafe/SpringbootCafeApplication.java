@@ -28,4 +28,9 @@ public class SpringbootCafeApplication {
     public String lazy(@RequestParam(value = "haha", defaultValue = "World") String name) {
         return String.format("Hello %s!", name);
     }
+
+    @GetMapping("/admin")
+    public String admin(@RequestParam(value = "haha", defaultValue = "hi") String name) {
+        return String.format("Hello %s!", name);
+    }
 }
