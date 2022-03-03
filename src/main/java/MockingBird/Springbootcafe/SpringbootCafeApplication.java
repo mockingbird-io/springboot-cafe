@@ -25,12 +25,17 @@ public class SpringbootCafeApplication {
     }
 
     @GetMapping("/lazy")
-    public String lazy(@RequestParam(value = "haha", defaultValue = "World") String name) {
+    public String lazy(@RequestParam(value = "lazy", defaultValue = "World") String name) {
         return String.format("Hello %s!", name);
     }
 
     @GetMapping("/admin")
-    public String admin(@RequestParam(value = "haha", defaultValue = "hi") String name) {
+    public String admin(@RequestParam(value = "admin", defaultValue = "login") String name) {
+        return String.format("Hello %s!", name);
+    }
+
+    @GetMapping("/login")
+    public String login(@RequestParam(value = "login", defaultValue = "admin") String name) {
         return String.format("Hello %s!", name);
     }
 }
