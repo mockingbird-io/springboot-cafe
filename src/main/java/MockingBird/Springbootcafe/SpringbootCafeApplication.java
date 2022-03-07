@@ -38,4 +38,9 @@ public class SpringbootCafeApplication {
     public String login(@RequestParam(value = "login", defaultValue = "admin") String name) {
         return String.format("Hello %s!", name);
     }
+
+    @GetMapping("/update")
+    public String update(@RequestParam(value = "success", defaultValue = "update") String name) {
+        return String.format("Hello %s!", name);
+    }
 }
