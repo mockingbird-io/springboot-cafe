@@ -43,4 +43,9 @@ public class SpringbootCafeApplication {
     public String update(@RequestParam(value = "success", defaultValue = "update") String name) {
         return String.format("Hello %s!", name);
     }
+
+    @GetMapping("/insert")
+    public String insert(@RequestParam(value = "insert", defaultValue = "success") String name) {
+        return String.format("Hello %s!", name);
+    }
 }
