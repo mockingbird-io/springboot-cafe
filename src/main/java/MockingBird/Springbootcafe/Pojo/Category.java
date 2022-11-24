@@ -1,8 +1,15 @@
-package Pojo;
+package MockingBird.Springbootcafe.Pojo;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "category")
 public class Category {
-    private int id;
-    private String name;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    int id;
+    String name;
 
     public int getId(){
         return id;
