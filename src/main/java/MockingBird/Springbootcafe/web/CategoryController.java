@@ -1,18 +1,18 @@
 package MockingBird.Springbootcafe.web;
 
-import MockingBird.Springbootcafe.Dao.CategoryDao;
 import MockingBird.Springbootcafe.Pojo.Category;
 import MockingBird.Springbootcafe.Service.CategoryService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 @RestController
 public class CategoryController {
-    @Autowired
+    @Resource
     CategoryService categoryService;
 
     @GetMapping("/categories")
@@ -28,6 +28,11 @@ public class CategoryController {
     }
     @GetMapping("/hello")
     public String hello(@RequestParam(value = "name", defaultValue = "World") String name) {
+        return String.format("Hellosss %s!", name);
+    }
+
+    @PostMapping("/hello")
+    public String hellos(@RequestParam(value = "name", defaultValue = "World") String name) {
         return String.format("Hellosss %s!", name);
     }
 }
