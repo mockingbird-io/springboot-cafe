@@ -27,7 +27,7 @@ public class CategoryController {
         categoryService.add(bean);
     }
     @GetMapping("/hello")
-    public String hello(@RequestParam(value = "name", defaultValue = "World") String name) {
+    public String hello(@RequestParam(value = "namesa", defaultValue = "World") String name) {
         return String.format("Hellosss %s!", name);
     }
 
