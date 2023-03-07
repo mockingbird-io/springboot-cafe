@@ -12,22 +12,23 @@ public class Result {
     int code;
     String msg;
     Object data;
-    private Result(int code, String msg, Object data){
+
+    private Result(int code, String msg, Object data) {
         this.code = code;
         this.msg = msg;
         this.data = data;
     }
 
     public static Result success() {
-        return new Result(SUCCESS_CODE,null,null);
+        return new Result(SUCCESS_CODE, null, null);
     }
 
     public static Result success(Object data) {
-        return new Result(SUCCESS_CODE,"",data);
+        return new Result(SUCCESS_CODE, "", data);
     }
 
     public static Result fail(String message) {
-        return new Result(FAIL_CODE,message,null);
+        return new Result(FAIL_CODE, message, null);
     }
 
 
