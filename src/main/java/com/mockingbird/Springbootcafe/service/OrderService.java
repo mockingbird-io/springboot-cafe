@@ -27,15 +27,15 @@ public class OrderService {
 
     public Page4Navigator<Order> list(int start, int size, int navigatePages) {
         Pageable pageable = PageRequest.of(start, size, Sort.by(Sort.Direction.DESC, "id"));
-        Page<Order> pageFromJPA =orderDAO.findAll(pageable);
-        return new Page4Navigator<>(pageFromJPA,navigatePages);
+        Page<Order> pageFromJPA = orderDAO.findAll(pageable);
+        return new Page4Navigator<>(pageFromJPA, navigatePages);
     }
 
-    public Order get(int id){
+    public Order get(int id) {
         return orderDAO.findById(id).orElse(null);
     }
 
-    public void update(Order order){
+    public void update(Order order) {
         orderDAO.save(order);
     }
 
@@ -46,12 +46,11 @@ public class OrderService {
     }
 
     private void removeOrderFromOrderItem(Order order) {
-        List<OrderItem> orderItems= order.getOrderItems();
+        List<OrderItem> orderItems = order.getOrderItems();
         for (OrderItem orderItem : orderItems) {
             orderItem.setOrder(null);
         }
     }
-
 
 
 }
