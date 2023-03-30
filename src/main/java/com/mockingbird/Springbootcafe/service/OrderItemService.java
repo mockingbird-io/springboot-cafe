@@ -15,17 +15,17 @@ public class OrderItemService {
     @Resource
     ProductImageService productImageService;
 
-    public void fill(List<Order> orders){
-        for (Order order : orders){
+    public void fill(List<Order> orders) {
+        for (Order order : orders) {
             fill(order);
         }
     }
 
-    public void fill(Order order){
+    public void fill(Order order) {
         List<OrderItem> list = listByOrder(order);
         float total = 0;
         int totalNumber = 0;
-        for (OrderItem orderItem : list){
+        for (OrderItem orderItem : list) {
             total += orderItem.getNumber() * orderItem.getProduct().getPromotePrice();
             totalNumber += orderItem.getNumber();
             productImageService.setFirstProductImage(orderItem.getProduct());
@@ -34,6 +34,7 @@ public class OrderItemService {
         order.setTotalNumber(totalNumber);
         order.setOrderItems(list);
     }
+
     public List<OrderItem> listByOrder(Order order) {
         return orderItemDAO.findByOrderOrderByIdDesc(order);
     }

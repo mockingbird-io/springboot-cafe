@@ -11,27 +11,29 @@ import java.util.List;
 
 @Entity
 @Table(name = "category")
-@JsonIgnoreProperties({ "handler","hibernateLazyInitializer" })
+@JsonIgnoreProperties({"handler", "hibernateLazyInitializer"})
 @Setter
 @Getter
 public class Category {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) 
-    @Column(name = "id")	
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     int id;
-    
+
     String name;
-    
-	public int getId() {
+
+    public int getId() {
         return id;
     }
+
     public void setId(int id) {
         this.id = id;
     }
-    
+
     public String getName() {
         return name;
     }
+
     public void setName(String name) {
         this.name = name;
     }
