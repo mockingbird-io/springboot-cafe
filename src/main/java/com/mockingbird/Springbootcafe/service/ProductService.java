@@ -23,11 +23,11 @@ public class ProductService {
     @Resource
     ProductImageService productImageService;
 
-    public void add(Product product){
+    public void add(Product product) {
         productDAO.save(product);
     }
 
-    public void delete(int id){
+    public void delete(int id) {
         productDAO.deleteById(id);
     }
 
@@ -35,35 +35,35 @@ public class ProductService {
         productDAO.save(product);
     }
 
-    public Product get(int id){
+    public Product get(int id) {
         return productDAO.findById(id).orElse(null);
     }
 
-    public Page4Navigator<Product> list(int cid, int start, int count, int navigatePages){
+    public Page4Navigator<Product> list(int cid, int start, int count, int navigatePages) {
         Category category = categoryService.get(cid);
-        Pageable pageable = PageRequest.of(start,count, Sort.by(Sort.Direction.DESC,"id"));
-        Page<Product> pageFromJpa = productDAO.findByCategory(category,pageable);
-        return new Page4Navigator<>(pageFromJpa,navigatePages);
+        Pageable pageable = PageRequest.of(start, count, Sort.by(Sort.Direction.DESC, "id"));
+        Page<Product> pageFromJpa = productDAO.findByCategory(category, pageable);
+        return new Page4Navigator<>(pageFromJpa, navigatePages);
     }
 
-    public void fill(List<Category> categoryList){
-        for (Category category : categoryList){
+    public void fill(List<Category> categoryList) {
+        for (Category category : categoryList) {
             fill(category);
         }
     }
 
-    public void fill(Category category){
+    public void fill(Category category) {
         List<Product> products = productDAO.findByCategoryOrderById(category);
         productImageService.setFirstProductImages(products);
         category.setProducts(products);
     }
 
-    public void fillByRow(List<Category> categoryList){
+    public void fillByRow(List<Category> categoryList) {
         int productNumberEachRow = 8;
-        for (Category category : categoryList){
+        for (Category category : categoryList) {
             List<Product> products = productDAO.findByCategoryOrderById(category);
             List<List<Product>> productByRow = new ArrayList<>();
-            for (int i = 0; i <= products.size(); i+=productNumberEachRow){
+            for (int i = 0; i <= products.size(); i += productNumberEachRow) {
                 int size = i + productNumberEachRow;
                 size = Math.min(size, products.size());
                 List<Product> productsOfEachRow = products.subList(i, size);
