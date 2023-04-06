@@ -9,7 +9,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "propertyValue")
-@JsonIgnoreProperties({ "handler","hibernateLazyInitializer" })
+@JsonIgnoreProperties({"handler", "hibernateLazyInitializer"})
 @Getter
 @Setter
 public class PropertyValue {
@@ -26,7 +26,6 @@ public class PropertyValue {
     private Property property;
 
     private String value;
-
 
 
 }
