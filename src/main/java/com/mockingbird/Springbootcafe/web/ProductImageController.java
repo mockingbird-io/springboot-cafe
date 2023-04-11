@@ -1,5 +1,10 @@
 package com.mockingbird.Springbootcafe.web;
 
+import cn.hutool.core.convert.Convert;
+import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.io.resource.ResourceUtil;
+import cn.hutool.poi.excel.ExcelReader;
+import cn.hutool.poi.excel.ExcelUtil;
 import com.mockingbird.Springbootcafe.pojo.Product;
 import com.mockingbird.Springbootcafe.pojo.ProductImage;
 import com.mockingbird.Springbootcafe.service.ProductImageService;
@@ -14,8 +19,11 @@ import javax.servlet.http.HttpServletRequest;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class ProductImageController {
@@ -103,5 +111,35 @@ public class ProductImageController {
         }
 
         return null;
+    }
+
+    @PostMapping("/excelUpload")
+    public Boolean excelUpload(@RequestParam("file") MultipartFile file) throws IOException{
+        if(file.isEmpty()){
+            return false;
+        }
+        InputStream files = file.getInputStream();
+        ExcelReader excelReader = ExcelUtil.getReader(files);
+        List<List<Object>> readAll = excelReader.read();
+        int i = 0;
+        for (List<Object> excelList : readAll){
+            i++;
+            if(i <= 6){
+                continue;
+            }
+            Object values0 = excelList.get(0);
+            Object values1 = excelList.get(1);
+            Object values2 = excelList.get(2);
+            Object values3 = excelList.get(3);
+            Integer values0_str = Convert.toInt(values0);
+            String values1_str = Convert.toStr(values1);
+            Integer values2_str = Convert.toInt(values2);
+            Date values3_str = Convert.toDate(values3);
+            System.out.println(values0_str);
+            System.out.println(values1_str);
+            System.out.println(values2_str);
+            System.out.println(values3_str);
+        }
+        return true;
     }
 }
