@@ -121,10 +121,10 @@ public class ProductImageController {
         InputStream files = file.getInputStream();
         ExcelReader excelReader = ExcelUtil.getReader(files);
         List<List<Object>> readAll = excelReader.read();
-        int i = 0;
+        int i = -1;
         for (List<Object> excelList : readAll){
             i++;
-            if(i <= 6){
+            if(i <= 5){
                 continue;
             }
             Object values0 = excelList.get(0);
