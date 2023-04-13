@@ -115,30 +115,62 @@ public class ProductImageController {
 
     @PostMapping("/excelUpload")
     public Boolean excelUpload(@RequestParam("file") MultipartFile file) throws IOException{
-        if(file.isEmpty()){
-            return false;
+        if(file == null){
+            return ResultVO.error(500,"文件不能为空");
         }
-        InputStream files = file.getInputStream();
-        ExcelReader excelReader = ExcelUtil.getReader(files);
+        InputStream inputStream = file.getInputStream();
+        ExcelReader excelReader = ExcelUtil.getReader(inputStream);
         List<List<Object>> readAll = excelReader.read();
         int i = -1;
-        for (List<Object> excelList : readAll){
+        for (List<Object> execList : readAll){
             i++;
-            if(i <= 5){
+            if (i<=5 || i>=106){
                 continue;
             }
-            Object values0 = excelList.get(0);
-            Object values1 = excelList.get(1);
-            Object values2 = excelList.get(2);
-            Object values3 = excelList.get(3);
-            Integer values0_str = Convert.toInt(values0);
-            String values1_str = Convert.toStr(values1);
-            Integer values2_str = Convert.toInt(values2);
-            Date values3_str = Convert.toDate(values3);
-            System.out.println(values0_str);
-            System.out.println(values1_str);
-            System.out.println(values2_str);
-            System.out.println(values3_str);
+
+            //录入master主表
+            ProjectMasterRef projectMasterRef = new ProjectMasterRef();
+            projectMasterRef.setNumber(projectMasterRefService.selectMaxNumber() + 1);
+            projectMasterRef.setType("省级重点项目");
+            projectMasterRef.setProjectName(Convert.toStr(execList.get(1)).trim());
+            projectMasterRef.setJsdd(Convert.toStr(execList.get(17)).trim());
+            projectMasterRef.setZtz(Convert.toBigDecimal(execList.get(2)).divide(new BigDecimal(10000),6, RoundingMode.UNNECESSARY));
+            projectMasterRef.setDnjhtz(Convert.toBigDecimal(execList.get(6)).divide(new BigDecimal(10000),6, RoundingMode.UNNECESSARY));
+            projectMasterRef.setJhKgTime(Convert.toLong(execList.get(3)));
+            projectMasterRefService.save(projectMasterRef);
+
+            //录入info扩展表
+            ProjectInfo projectInfo = new ProjectInfo();
+            projectInfo.setMasterId(projectMasterRef.getId());
+            projectInfo.setZrdw(Convert.toStr(execList.get(16)).trim());
+            String[] tempStr;
+            tempStr = Convert.toStr(execList.get(29)).trim().split(",");
+            projectInfo.setXmllr(tempStr[0].replace(" ",""));
+            projectInfo.setXmllrPhone(tempStr[1]);
+            projectInfo.setZyjsnr(Convert.toStr(execList.get(15)));
+            projectInfo.setZjly(Convert.toStr(execList.get(21)).replace(" ",""));
+            projectInfo.setDnjsnrjydjhap(Convert.toStr(execList.get(5)));
+            projectInfo.setBuildertype(Convert.toStr(execList.get(19)));
+            projectInfo.setSpwj(Convert.toStr(execList.get(18)));
+            projectInfo.setTzly(Convert.toStr(execList.get(20)));
+            projectInfo.setLand_zyd(Convert.toBigDecimal(execList.get(22)));
+            projectInfo.setLand_yyxq(Convert.toBigDecimal(execList.get(23)));
+            projectInfo.setLand_yyyd(Convert.toBigDecimal(execList.get(24)));
+            projectInfo.setGh(Convert.toStr(execList.get(25)));
+            projectInfo.setYd(Convert.toStr(execList.get(26)));
+            projectInfo.setHp(Convert.toStr(execList.get(27)));
+            projectInfo.setNp(Convert.toStr(execList.get(28)));
+            projectInfo.setFocus(Convert.toStr(execList.get(30)));
+            projectInfoService.save(projectInfo);
+
+            //录入type_ref表
+            ProjectTypeRef projectTypeRef = new ProjectTypeRef();
+            projectTypeRef.setMasterId(projectMasterRef.getId());
+            projectTypeRef.setType("省级重点项目");
+            projectTypeRefService.save(projectTypeRef);
+
+            Object value1 = execList.get(1);
+            System.out.println(value1);
         }
         return true;
     }
