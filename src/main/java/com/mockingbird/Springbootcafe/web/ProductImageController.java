@@ -113,65 +113,11 @@ public class ProductImageController {
         return null;
     }
 
-//    @PostMapping("/excelUpload")
-//    public Boolean excelUpload(@RequestParam("file") MultipartFile file) throws IOException{
-//        if(file == null){
-//            return ResultVO.error(500,"文件不能为空");
-//        }
-//        InputStream inputStream = file.getInputStream();
-//        ExcelReader excelReader = ExcelUtil.getReader(inputStream);
-//        List<List<Object>> readAll = excelReader.read();
-//        int i = -1;
-//        for (List<Object> execList : readAll){
-//            i++;
-//            if (i<=5 || i>=106){
-//                continue;
-//            }
-//
-//            //录入master主表
-//            ProjectMasterRef projectMasterRef = new ProjectMasterRef();
-//            projectMasterRef.setNumber(projectMasterRefService.selectMaxNumber() + 1);
-//            projectMasterRef.setType("省级重点项目");
-//            projectMasterRef.setProjectName(Convert.toStr(execList.get(1)).trim());
-//            projectMasterRef.setJsdd(Convert.toStr(execList.get(17)).trim());
-//            projectMasterRef.setZtz(Convert.toBigDecimal(execList.get(2)).divide(new BigDecimal(10000),6, RoundingMode.UNNECESSARY));
-//            projectMasterRef.setDnjhtz(Convert.toBigDecimal(execList.get(6)).divide(new BigDecimal(10000),6, RoundingMode.UNNECESSARY));
-//            projectMasterRef.setJhKgTime(Convert.toLong(execList.get(3)));
-//            projectMasterRefService.save(projectMasterRef);
-//
-//            //录入info扩展表
-//            ProjectInfo projectInfo = new ProjectInfo();
-//            projectInfo.setMasterId(projectMasterRef.getId());
-//            projectInfo.setZrdw(Convert.toStr(execList.get(16)).trim());
-//            String[] tempStr;
-//            tempStr = Convert.toStr(execList.get(29)).trim().split(",");
-//            projectInfo.setXmllr(tempStr[0].replace(" ",""));
-//            projectInfo.setXmllrPhone(tempStr[1]);
-//            projectInfo.setZyjsnr(Convert.toStr(execList.get(15)));
-//            projectInfo.setZjly(Convert.toStr(execList.get(21)).replace(" ",""));
-//            projectInfo.setDnjsnrjydjhap(Convert.toStr(execList.get(5)));
-//            projectInfo.setBuildertype(Convert.toStr(execList.get(19)));
-//            projectInfo.setSpwj(Convert.toStr(execList.get(18)));
-//            projectInfo.setTzly(Convert.toStr(execList.get(20)));
-//            projectInfo.setLand_zyd(Convert.toBigDecimal(execList.get(22)));
-//            projectInfo.setLand_yyxq(Convert.toBigDecimal(execList.get(23)));
-//            projectInfo.setLand_yyyd(Convert.toBigDecimal(execList.get(24)));
-//            projectInfo.setGh(Convert.toStr(execList.get(25)));
-//            projectInfo.setYd(Convert.toStr(execList.get(26)));
-//            projectInfo.setHp(Convert.toStr(execList.get(27)));
-//            projectInfo.setNp(Convert.toStr(execList.get(28)));
-//            projectInfo.setFocus(Convert.toStr(execList.get(30)));
-//            projectInfoService.save(projectInfo);
-//
-//            //录入type_ref表
-//            ProjectTypeRef projectTypeRef = new ProjectTypeRef();
-//            projectTypeRef.setMasterId(projectMasterRef.getId());
-//            projectTypeRef.setType("省级重点项目");
-//            projectTypeRefService.save(projectTypeRef);
-//
-//            Object value1 = execList.get(1);
-//            System.out.println(value1);
-//        }
-//        return true;
-//    }
+    @PostMapping("/excelUpload")
+    public Boolean excelUpload(@RequestParam("file") MultipartFile file) throws IOException{
+        InputStream inputStream = file.getInputStream();
+        ExcelReader excelReader = ExcelUtil.getReader(inputStream);
+        List<List<Object>> readAll = excelReader.read();
+        return false;
+    }
 }
