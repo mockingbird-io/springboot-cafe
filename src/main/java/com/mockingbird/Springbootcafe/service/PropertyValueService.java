@@ -16,19 +16,19 @@ public class PropertyValueService {
     @Resource
     PropertyService propertyService;
 
-    public void update(PropertyValue propertyValue){
+    public void update(PropertyValue propertyValue) {
         propertyValueDAO.save(propertyValue);
     }
 
-    public List<PropertyValue> list(Product product){
+    public List<PropertyValue> list(Product product) {
         return propertyValueDAO.findByProductOrderByIdDesc(product);
     }
 
-    public void init(Product product){
+    public void init(Product product) {
         List<Property> propertyList = propertyService.listByCategory(product.getCategory());
-        for (Property property : propertyList){
-            PropertyValue propertyValue = getByPropertyAndProduct(property,product);
-            if(propertyValue == null){
+        for (Property property : propertyList) {
+            PropertyValue propertyValue = getByPropertyAndProduct(property, product);
+            if (propertyValue == null) {
                 propertyValue = new PropertyValue();
                 propertyValue.setProperty(property);
                 propertyValue.setProduct(product);
@@ -37,7 +37,7 @@ public class PropertyValueService {
         }
     }
 
-    public PropertyValue getByPropertyAndProduct(Property property, Product product){
-        return propertyValueDAO.getByPropertyAndProduct(property,product);
+    public PropertyValue getByPropertyAndProduct(Property property, Product product) {
+        return propertyValueDAO.getByPropertyAndProduct(property, product);
     }
 }

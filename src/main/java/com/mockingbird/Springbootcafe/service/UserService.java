@@ -20,16 +20,16 @@ public class UserService {
 
     public Page4Navigator<Users> list(int start, int size, int navigatePages) {
         Pageable pageable = PageRequest.of(start, size, Sort.by(Sort.Direction.DESC, "id"));
-        Page<Users> pageFromJPA =userDAO.findAll(pageable);
-        return new Page4Navigator<>(pageFromJPA,navigatePages);
+        Page<Users> pageFromJPA = userDAO.findAll(pageable);
+        return new Page4Navigator<>(pageFromJPA, navigatePages);
     }
 
-    public boolean isExist(String name){
+    public boolean isExist(String name) {
         Users users = userDAO.findByName(name);
         return users != null;
     }
 
-    public void add(Users users){
+    public void add(Users users) {
         userDAO.save(users);
     }
 }

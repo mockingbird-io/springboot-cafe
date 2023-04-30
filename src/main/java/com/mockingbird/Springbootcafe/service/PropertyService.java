@@ -36,18 +36,18 @@ public class PropertyService {
         propertyDAO.save(bean);
     }
 
-    public Page4Navigator<Property> list(int cid, int start, int size, int navigatePages){
+    public Page4Navigator<Property> list(int cid, int start, int size, int navigatePages) {
         Category category = categoryService.get(cid);
-        Sort sort = Sort.by(Sort.Direction.DESC,"id");
-        Pageable pageable = PageRequest.of(start,size,sort);
+        Sort sort = Sort.by(Sort.Direction.DESC, "id");
+        Pageable pageable = PageRequest.of(start, size, sort);
 
-        Page<Property> pageFromJPA = propertyDAO.findByCategory(category,pageable);
+        Page<Property> pageFromJPA = propertyDAO.findByCategory(category, pageable);
 
-        return new Page4Navigator<>(pageFromJPA,navigatePages);
+        return new Page4Navigator<>(pageFromJPA, navigatePages);
 
     }
 
-    public List<Property> listByCategory(Category category){
+    public List<Property> listByCategory(Category category) {
         return propertyDAO.findByCategory(category);
     }
 
