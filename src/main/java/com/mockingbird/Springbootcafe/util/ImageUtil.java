@@ -56,7 +56,6 @@ public class ImageUtil {
             BufferedImage buffImg = null;
             buffImg = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
             buffImg.getGraphics().drawImage(srcImage.getScaledInstance(width, height, Image.SCALE_SMOOTH), 0, 0, null);
-
             return buffImg;
         } catch (Exception e) {
             // TODO Auto-generated catch block

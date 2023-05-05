@@ -33,19 +33,19 @@ public class ProductImageController {
     ProductService productService;
 
     @GetMapping("/products/{pid}/productImages")
-    public List<ProductImage> list(@RequestParam("type") String type, @PathVariable("pid") int pid) throws Exception{
+    public List<ProductImage> list(@RequestParam("type") String type, @PathVariable("pid") int pid) throws Exception {
         Product product = productService.get(pid);
-        if(ProductImageService.type_single.equals(type)){
+        if (ProductImageService.type_single.equals(type)) {
             return productImageService.listSingleProductImages(product);
-        }else if(ProductImageService.type_detail.equals(type)){
+        } else if (ProductImageService.type_detail.equals(type)) {
             return productImageService.listDetailProductImages(product);
-        }else {
+        } else {
             return new ArrayList<>();
         }
     }
 
     @PostMapping("/productImages")
-    public Object add(@RequestParam("pid") int pid, @RequestParam("type") String type, MultipartFile image, HttpServletRequest request) throws Exception{
+    public Object add(@RequestParam("pid") int pid, @RequestParam("type") String type, MultipartFile image, HttpServletRequest request) throws Exception {
         ProductImage productImage = new ProductImage();
         Product product = productService.get(pid);
         productImage.setProduct(product);
@@ -53,16 +53,15 @@ public class ProductImageController {
 
         productImageService.add(productImage);
         String folder = "img/";
-        if(ProductImageService.type_single.equals(productImage.getType())){
-            folder +="productSingle";
+        if (ProductImageService.type_single.equals(productImage.getType())) {
+            folder += "productSingle";
+        } else {
+            folder += "productDetail";
         }
-        else{
-            folder +="productDetail";
-        }
-        File imageFolder= new File(request.getServletContext().getRealPath(folder));
-        File file = new File(imageFolder,productImage.getId()+".jpg");
+        File imageFolder = new File(request.getServletContext().getRealPath(folder));
+        File file = new File(imageFolder, productImage.getId() + ".jpg");
         String fileName = file.getName();
-        if(!file.getParentFile().exists())
+        if (!file.getParentFile().exists())
             file.getParentFile().mkdirs();
         try {
             image.transferTo(file);
@@ -72,9 +71,9 @@ public class ProductImageController {
             e.printStackTrace();
         }
 
-        if(ProductImageService.type_single.equals(productImage.getType())){
-            String imageFolder_small= request.getServletContext().getRealPath("img/productSingle_small");
-            String imageFolder_middle= request.getServletContext().getRealPath("img/productSingle_middle");
+        if (ProductImageService.type_single.equals(productImage.getType())) {
+            String imageFolder_small = request.getServletContext().getRealPath("img/productSingle_small");
+            String imageFolder_middle = request.getServletContext().getRealPath("img/productSingle_middle");
             File f_small = new File(imageFolder_small, fileName);
             File f_middle = new File(imageFolder_middle, fileName);
             f_small.getParentFile().mkdirs();
@@ -87,23 +86,23 @@ public class ProductImageController {
     }
 
     @DeleteMapping("/productImages/{id}")
-    public String delete(@PathVariable("id") int id, HttpServletRequest request) throws Exception{
+    public String delete(@PathVariable("id") int id, HttpServletRequest request) throws Exception {
         ProductImage bean = productImageService.get(id);
         productImageService.delete(id);
 
         String folder = "img/";
-        if(ProductImageService.type_single.equals(bean.getType()))
-            folder +="productSingle";
+        if (ProductImageService.type_single.equals(bean.getType()))
+            folder += "productSingle";
         else
-            folder +="productDetail";
+            folder += "productDetail";
 
-        File  imageFolder= new File(request.getServletContext().getRealPath(folder));
-        File file = new File(imageFolder,bean.getId()+".jpg");
+        File imageFolder = new File(request.getServletContext().getRealPath(folder));
+        File file = new File(imageFolder, bean.getId() + ".jpg");
         String fileName = file.getName();
         file.delete();
-        if(ProductImageService.type_single.equals(bean.getType())){
-            String imageFolder_small= request.getServletContext().getRealPath("img/productSingle_small");
-            String imageFolder_middle= request.getServletContext().getRealPath("img/productSingle_middle");
+        if (ProductImageService.type_single.equals(bean.getType())) {
+            String imageFolder_small = request.getServletContext().getRealPath("img/productSingle_small");
+            String imageFolder_middle = request.getServletContext().getRealPath("img/productSingle_middle");
             File f_small = new File(imageFolder_small, fileName);
             File f_middle = new File(imageFolder_middle, fileName);
             f_small.delete();
@@ -114,7 +113,7 @@ public class ProductImageController {
     }
 
     @PostMapping("/excelUpload")
-    public Boolean excelUpload(@RequestParam("file") MultipartFile file) throws IOException{
+    public Boolean excelUpload(@RequestParam("file") MultipartFile file) throws IOException {
         InputStream inputStream = file.getInputStream();
         ExcelReader excelReader = ExcelUtil.getReader(inputStream);
         List<List<Object>> readAll = excelReader.read();

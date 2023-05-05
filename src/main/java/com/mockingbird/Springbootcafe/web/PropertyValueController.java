@@ -18,14 +18,14 @@ public class PropertyValueController {
     ProductService productService;
 
     @GetMapping("/products/{pid}/propertyValues")
-    public List<PropertyValue> list(@PathVariable(name = "pid") int pid) throws Exception{
+    public List<PropertyValue> list(@PathVariable(name = "pid") int pid) throws Exception {
         Product product = productService.get(pid);
         propertyValueService.init(product);
         return propertyValueService.list(product);
     }
 
     @PutMapping("/propertyValues")
-    public Object update(@RequestBody PropertyValue propertyValue){
+    public Object update(@RequestBody PropertyValue propertyValue) {
         propertyValueService.update(propertyValue);
         return propertyValue;
     }
