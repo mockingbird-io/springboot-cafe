@@ -4,6 +4,7 @@ import com.mockingbird.Springbootcafe.pojo.Category;
 import com.mockingbird.Springbootcafe.service.CategoryService;
 import com.mockingbird.Springbootcafe.util.ImageUtil;
 import com.mockingbird.Springbootcafe.util.Page4Navigator;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
