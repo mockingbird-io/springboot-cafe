@@ -25,7 +25,6 @@ public class OrderService {
     @Resource
     OrderDAO orderDAO;
 
-
     public Page4Navigator<Order> list(int start, int size, int navigatePages) {
         Pageable pageable = PageRequest.of(start, size, Sort.by(Sort.Direction.DESC, "id"));
         Page<Order> pageFromJPA = orderDAO.findAll(pageable);
