@@ -22,6 +22,7 @@ public class CategoryService {
 
 	public Page4Navigator<Category> list(int start,int size, int navigatePages){
 		Sort sort = Sort.by(Sort.Direction.DESC,"id");
+
 		Pageable pageable = PageRequest.of(start,size,sort);
 
 		Page<Category> pageFromJPA = categoryDAO.findAll(pageable);
