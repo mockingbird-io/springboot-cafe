@@ -56,6 +56,7 @@ public class ProductService {
         List<Product> products = productDAO.findByCategoryOrderById(category);
         productImageService.setFirstProductImages(products);
         category.setProducts(products);
+
     }
 
     public void fillByRow(List<Category> categoryList) {
