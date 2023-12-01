@@ -1,7 +1,6 @@
 package com.mockingbird.Springbootcafe.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,13 +24,14 @@ public class Product {
     private Category category;
 
     private String name;
-    @Column(name = "subtitle")
+    @Column(name = "sub_title")
     private String subTitle;
-    @Column(name = "originalprice")
+    @Column(name = "original_price")
     private float originalPrice;
-    @Column(name = "promoteprice")
+    @Column(name = "promote_price")
     private float promotePrice;
     private int stock;
+    @Column(name = "create_date")
     private Date createDate;
 
     @Transient
