@@ -27,7 +27,7 @@ public class Product {
     private String name;
     @Column(name = "subtitle")
     private String subTitle;
-    @Column(name = "orignalprice")
+    @Column(name = "originalprice")
     private float originalPrice;
     @Column(name = "promoteprice")
     private float promotePrice;
