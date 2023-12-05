@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.HtmlUtils;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @RestController
@@ -25,7 +26,7 @@ public class ForeRestController {
     UserService userService;
 
     @GetMapping("/forehome")
-    public Object home(){
+    public Object home() {
         List<Category> list = categoryService.list();
         productService.fill(list);
         productService.fillByRow(list);
@@ -34,16 +35,32 @@ public class ForeRestController {
     }
 
     @PostMapping("/foreregister")
-    public Object register(@RequestBody Users users){
+    public Object register(@RequestBody Users users) {
         String name = users.getName();
         name = HtmlUtils.htmlEscape(name);
         users.setName(name);
         boolean exist = userService.isExist(name);
-        if (exist){
+        if (exist) {
             String message = "用户名已经被使用,不能使用";
             return Result.fail(message);
         }
         userService.add(users);
         return Result.success();
+    }
+
+    @PostMapping("/forelogin")
+    public Object login(@RequestBody Users userParam, HttpSession session) {
+        String name = userParam.getName();
+        name = HtmlUtils.htmlEscape(name);
+
+        Users user = userService.get(name, userParam.getPassword());
+        if (user == null) {
+            String message = "账号密码错误";
+            return Result.fail(message);
+        } else {
+            session.setAttribute("user", user);
+            return Result.success();
+        }
+
     }
 }
