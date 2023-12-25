@@ -1,18 +1,19 @@
 package com.mockingbird.Springbootcafe.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "product")
 @JsonIgnoreProperties({ "handler","hibernateLazyInitializer"})
 //@Document(indexName = "tmall_springboot")
-@Getter
-@Setter
+@Data
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,14 +35,23 @@ public class Product {
     @Column(name = "create_date")
     private Date createDate;
 
+    @Getter
     @Transient
-    private ProductImage productImage;
+    private ProductImage firstProductImage;
+    @Transient
+    private List<ProductImage> productSingleImages;
+    @Transient
+    private List<ProductImage> productDetailImages;
+    @Transient
+    private int reviewCount;
+    @Transient
+    private int saleCount;
 
-    public ProductImage getFirstProductImage() {
-        return productImage;
-    }
-
-    public void setFirstProductImage(ProductImage productImage){
-        this.productImage = productImage;
+    @Override
+    public String toString() {
+        return "Product [id=" + id + ", category=" + category + ", name=" + name + ", subTitle=" + subTitle
+                + ", originalPrice=" + originalPrice + ", promotePrice=" + promotePrice + ", stock=" + stock
+                + ", createDate=" + createDate + ", firstProductImage=" + firstProductImage + ", reviewCount="
+                + reviewCount + ", saleCount=" + saleCount + "]";
     }
 }

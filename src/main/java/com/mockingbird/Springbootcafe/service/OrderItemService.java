@@ -3,6 +3,7 @@ package com.mockingbird.Springbootcafe.service;
 import com.mockingbird.Springbootcafe.dao.OrderItemDAO;
 import com.mockingbird.Springbootcafe.pojo.Order;
 import com.mockingbird.Springbootcafe.pojo.OrderItem;
+import com.mockingbird.Springbootcafe.pojo.Product;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -14,6 +15,10 @@ public class OrderItemService {
     OrderItemDAO orderItemDAO;
     @Resource
     ProductImageService productImageService;
+
+    public void update(OrderItem orderItem) {
+        orderItemDAO.save(orderItem);
+    }
 
     public void fill(List<Order> orders) {
         for (Order order : orders) {
@@ -39,4 +44,29 @@ public class OrderItemService {
         return orderItemDAO.findByOrderOrderByIdDesc(order);
     }
 
+    public void add(OrderItem orderItem) {
+        orderItemDAO.save(orderItem);
+    }
+    public OrderItem get(int id) {
+        return orderItemDAO.findById(id).orElse(null);
+    }
+
+    public void delete(int id) {
+        orderItemDAO.deleteById(id);
+    }
+
+    public int getSaleCount(Product product) {
+        List<OrderItem> ois =listByProduct(product);
+        int result =0;
+        for (OrderItem oi : ois) {
+            if(null!=oi.getOrder())
+                if(null != oi.getOrder().getPayDate())
+                    result+=oi.getNumber();
+        }
+        return result;
+    }
+
+    public List<OrderItem> listByProduct(Product product) {
+        return orderItemDAO.findByProduct(product);
+    }
 }
