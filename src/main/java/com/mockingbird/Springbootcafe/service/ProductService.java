@@ -22,6 +22,10 @@ public class ProductService {
     CategoryService categoryService;
     @Resource
     ProductImageService productImageService;
+    @Resource
+    OrderItemService orderItemService;
+    @Resource
+    ReviewService reviewService;
 
     public void add(Product product) {
         productDAO.save(product);
@@ -72,5 +76,19 @@ public class ProductService {
             }
             category.setProductsByRow(productByRow);
         }
+    }
+
+    public void setSaleAndReviewNumber(Product product) {
+        int saleCount = orderItemService.getSaleCount(product);
+        product.setSaleCount(saleCount);
+
+        int reviewCount = reviewService.getCount(product);
+        product.setReviewCount(reviewCount);
+
+    }
+
+    public void setSaleAndReviewNumber(List<Product> products) {
+        for (Product product : products)
+            setSaleAndReviewNumber(product);
     }
 }
