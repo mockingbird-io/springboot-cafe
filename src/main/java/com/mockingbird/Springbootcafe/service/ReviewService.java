@@ -12,8 +12,6 @@ import java.util.List;
 public class ReviewService {
     @Resource
     ReviewDAO reviewDAO;
-    @Resource
-    ProductService productService;
 
     public void add(Review review) {
         reviewDAO.save(review);

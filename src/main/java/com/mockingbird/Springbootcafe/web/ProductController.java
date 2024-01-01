@@ -15,8 +15,6 @@ public class ProductController {
     @Resource
     ProductService productService;
     @Resource
-    CategoryService categoryService;
-    @Resource
     ProductImageService productImageService;
 
     @GetMapping("/categories/{cid}/products")

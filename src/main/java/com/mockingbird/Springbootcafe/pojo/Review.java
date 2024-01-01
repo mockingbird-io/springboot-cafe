@@ -27,6 +27,8 @@ public class Review {
     private Product product;
 
     private String content;
+
+    @Column(name = "create_date")
     private Date createDate;
 
 }
