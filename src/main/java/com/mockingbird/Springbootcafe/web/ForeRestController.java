@@ -1,5 +1,6 @@
 package com.mockingbird.Springbootcafe.web;
 
+import com.mockingbird.Springbootcafe.comparator.*;
 import com.mockingbird.Springbootcafe.pojo.*;
 import com.mockingbird.Springbootcafe.service.*;
 import com.mockingbird.Springbootcafe.util.Result;
@@ -93,5 +94,38 @@ public class ForeRestController {
         if (null != user)
             return Result.success();
         return Result.fail("未登录");
+    }
+
+    @GetMapping("forecategory/{cid}")
+    public Object category(@PathVariable int cid,String sort) {
+        Category c = categoryService.get(cid);
+        productService.fill(c);
+        productService.setSaleAndReviewNumber(c.getProducts());
+        categoryService.removeCategoryFromProduct(c);
+
+        if(null!=sort){
+            switch(sort){
+                case "review":
+                    c.getProducts().sort(new ProductReviewComparator());
+                    break;
+                case "date" :
+                    c.getProducts().sort(new ProductDateComparator());
+                    break;
+
+                case "saleCount" :
+                    c.getProducts().sort(new ProductSaleCountComparator());
+                    break;
+
+                case "price":
+                    c.getProducts().sort(new ProductPriceComparator());
+                    break;
+
+                case "all":
+                    c.getProducts().sort(new ProductAllcomparator());
+                    break;
+            }
+        }
+
+        return c;
     }
 }
