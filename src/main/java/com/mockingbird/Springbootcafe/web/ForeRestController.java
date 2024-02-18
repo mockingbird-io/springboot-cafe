@@ -133,7 +133,7 @@ public class ForeRestController {
         if(null==keyword)
             keyword = "";
         List<Product> ps= productService.search(keyword,0,20);
-        productImageService.setFirstProdutImages(ps);
+        productImageService.setFirstProductImages(ps);
         productService.setSaleAndReviewNumber(ps);
         return ps;
     }
