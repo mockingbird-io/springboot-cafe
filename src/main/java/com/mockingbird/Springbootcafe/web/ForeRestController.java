@@ -91,28 +91,29 @@ public class ForeRestController {
     @GetMapping("forecheckLogin")
     public Object checkLogin(HttpSession session) {
         Users user = (Users) session.getAttribute("user");
-        if (null != user)
+        if (null != user) {
             return Result.success();
+        }
         return Result.fail("未登录");
     }
 
     @GetMapping("forecategory/{cid}")
-    public Object category(@PathVariable int cid,String sort) {
+    public Object category(@PathVariable int cid, String sort) {
         Category c = categoryService.get(cid);
         productService.fill(c);
         productService.setSaleAndReviewNumber(c.getProducts());
         categoryService.removeCategoryFromProduct(c);
 
-        if(null!=sort){
-            switch(sort){
+        if (null != sort) {
+            switch (sort) {
                 case "review":
                     c.getProducts().sort(new ProductReviewComparator());
                     break;
-                case "date" :
+                case "date":
                     c.getProducts().sort(new ProductDateComparator());
                     break;
 
-                case "saleCount" :
+                case "saleCount":
                     c.getProducts().sort(new ProductSaleCountComparator());
                     break;
 
@@ -129,10 +130,10 @@ public class ForeRestController {
     }
 
     @PostMapping("foresearch")
-    public Object search( String keyword){
-        if(null==keyword)
+    public Object search(String keyword) {
+        if (null == keyword)
             keyword = "";
-        List<Product> ps= productService.search(keyword,0,20);
+        List<Product> ps = productService.search(keyword, 0, 20);
         productImageService.setFirstProductImages(ps);
         productService.setSaleAndReviewNumber(ps);
         return ps;
