@@ -91,4 +91,9 @@ public class ProductService {
         for (Product product : products)
             setSaleAndReviewNumber(product);
     }
+
+    public List<Product> search(String keyword, int start, int size) {
+        Pageable pageable = PageRequest.of(start, size, Sort.by(Sort.Direction.DESC, "id"));
+        return productDAO.findByNameLike("%"+keyword+"%",pageable);
+    }
 }

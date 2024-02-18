@@ -125,7 +125,17 @@ public class ForeRestController {
                     break;
             }
         }
-
         return c;
     }
+
+    @PostMapping("foresearch")
+    public Object search( String keyword){
+        if(null==keyword)
+            keyword = "";
+        List<Product> ps= productService.search(keyword,0,20);
+        productImageService.setFirstProdutImages(ps);
+        productService.setSaleAndReviewNumber(ps);
+        return ps;
+    }
+
 }
