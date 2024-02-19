@@ -39,8 +39,7 @@ public class ForeRestController {
 
     @PostMapping("/foreregister")
     public Object register(@RequestBody Users users) {
-        String name = users.getName();
-        name = HtmlUtils.htmlEscape(name);
+        String name = HtmlUtils.htmlEscape(users.getName());
         users.setName(name);
         boolean exist = userService.isExist(name);
         if (exist) {
