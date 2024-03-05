@@ -4,6 +4,7 @@ import com.mockingbird.Springbootcafe.dao.OrderItemDAO;
 import com.mockingbird.Springbootcafe.pojo.Order;
 import com.mockingbird.Springbootcafe.pojo.OrderItem;
 import com.mockingbird.Springbootcafe.pojo.Product;
+import com.mockingbird.Springbootcafe.pojo.Users;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -68,5 +69,9 @@ public class OrderItemService {
 
     public List<OrderItem> listByProduct(Product product) {
         return orderItemDAO.findByProduct(product);
+    }
+
+    public List<OrderItem> listByUsers(Users users){
+        return orderItemDAO.findByUsersAndOrderIsNull(users);
     }
 }

@@ -1,6 +1,7 @@
 package com.mockingbird.Springbootcafe.service;
 
 import com.mockingbird.Springbootcafe.dao.ProductImageDAO;
+import com.mockingbird.Springbootcafe.pojo.OrderItem;
 import com.mockingbird.Springbootcafe.pojo.Product;
 import com.mockingbird.Springbootcafe.pojo.ProductImage;
 import org.springframework.stereotype.Service;
@@ -50,5 +51,11 @@ public class ProductImageService {
     public void setFirstProductImages(List<Product> products) {
         for (Product product : products)
             setFirstProductImage(product);
+    }
+
+    public void setFirstProductImagesOnOrderItems(List<OrderItem> ois) {
+        for (OrderItem oi : ois) {
+            setFirstProductImage(oi.getProduct());
+        }
     }
 }
