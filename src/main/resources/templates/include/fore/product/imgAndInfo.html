@@ -117,6 +117,30 @@ function imgAndInfoPageRegisterListeners(vue){
         }
     );
 }
+
+$(".addCartLink").click(function(){
+	var url = "forecheckLogin";
+	axios.get(url).then(function(response) {
+		if(0==response.data.code){
+			var pid = vue.p.id;
+			var num= $(".productNumberSetting").val();
+			var url =  "foreaddCart?pid="+pid+"&num="+num;
+			axios.get(url).then(function(response) {
+				var result = response.data;
+				if(0==result.code){
+					$(".addCartButton").html("已加入购物车");
+					$(".addCartButton").attr("disabled","disabled");
+					$(".addCartButton").css("background-color","lightgray")
+					$(".addCartButton").css("border-color","lightgray")
+					$(".addCartButton").css("color","black")
+				}
+			});
+		}
+		else{
+			$("#loginModal").modal('show');
+		}
+	});
+});
  
 </script>
 	 
