@@ -74,4 +74,8 @@ public class OrderItemService {
     public List<OrderItem> listByUsers(Users users){
         return orderItemDAO.findByUsersAndOrderIsNull(users);
     }
+
+    public List<OrderItem> listByUser(Users user) {
+        return orderItemDAO.findByUsersAndOrderIsNull(user);
+    }
 }
