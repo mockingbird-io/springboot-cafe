@@ -4,15 +4,15 @@ import com.mockingbird.Springbootcafe.comparator.*;
 import com.mockingbird.Springbootcafe.pojo.*;
 import com.mockingbird.Springbootcafe.service.*;
 import com.mockingbird.Springbootcafe.util.Result;
+import org.apache.commons.lang.math.RandomUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.HtmlUtils;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @RestController
 public class ForeRestController {
@@ -30,6 +30,8 @@ public class ForeRestController {
     ReviewService reviewService;
     @Resource
     OrderItemService orderItemService;
+    @Autowired
+    private OrderService orderService;
 
     @GetMapping("/forehome")
     public Object home() {
@@ -234,6 +236,36 @@ public class ForeRestController {
             return Result.fail("未登录");
         orderItemService.delete(oiid);
         return Result.success();
+    }
+
+    @PostMapping("forecreateOrder")
+    public Object createOrder(@RequestBody Order order,HttpSession session){
+        Users user =(Users)  session.getAttribute("user");
+        if(null==user)
+            return Result.fail("未登录");
+        String orderCode = new SimpleDateFormat("yyyyMMddHHmmssSSS").format(new Date()) + RandomUtils.nextInt(10000);
+        order.setOrderCode(orderCode);
+        order.setCreateDate(new Date());
+        order.setUsers(user);
+        order.setStatus(OrderService.waitPay);
+        List<OrderItem> ois= (List<OrderItem>)  session.getAttribute("ois");
+
+        float total = orderService.add(order,ois);
+
+        Map<String,Object> map = new HashMap<>();
+        map.put("oid", order.getId());
+        map.put("total", total);
+
+        return Result.success(map);
+    }
+
+    @GetMapping("forepayed")
+    public Object payed(int oid) {
+        Order order = orderService.get(oid);
+        order.setStatus(OrderService.waitDelivery);
+        order.setPayDate(new Date());
+        orderService.update(order);
+        return order;
     }
 
 }
