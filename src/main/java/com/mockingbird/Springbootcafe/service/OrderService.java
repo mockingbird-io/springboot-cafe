@@ -3,6 +3,7 @@ package com.mockingbird.Springbootcafe.service;
 import com.mockingbird.Springbootcafe.dao.OrderDAO;
 import com.mockingbird.Springbootcafe.pojo.Order;
 import com.mockingbird.Springbootcafe.pojo.OrderItem;
+import com.mockingbird.Springbootcafe.pojo.Users;
 import com.mockingbird.Springbootcafe.util.Page4Navigator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -27,7 +28,7 @@ public class OrderService {
 
     @Resource
     OrderDAO orderDAO;
-    @Autowired
+    @Resource
     private OrderItemService orderItemService;
 
     public Page4Navigator<Order> list(int start, int size, int navigatePages) {
@@ -50,7 +51,7 @@ public class OrderService {
         }
     }
 
-    private void removeOrderFromOrderItem(Order order) {
+    public void removeOrderFromOrderItem(Order order) {
         List<OrderItem> orderItems = order.getOrderItems();
         for (OrderItem orderItem : orderItems) {
             orderItem.setOrder(null);
@@ -77,5 +78,23 @@ public class OrderService {
         return total;
     }
 
+    public List<Order> listByUserWithoutDelete(Users user) {
+        List<Order> orders = listByUserAndNotDeleted(user);
+        orderItemService.fill(orders);
+        return orders;
+    }
+
+    public List<Order> listByUserAndNotDeleted(Users user) {
+        return orderDAO.findByUsersAndStatusNotOrderByIdDesc(user, OrderService.delete);
+    }
+
+    public void cacl(Order o) {
+        List<OrderItem> orderItems = o.getOrderItems();
+        float total = 0;
+        for (OrderItem orderItem : orderItems) {
+            total+=orderItem.getProduct().getPromotePrice()*orderItem.getNumber();
+        }
+        o.setTotal(total);
+    }
 
 }

@@ -268,4 +268,24 @@ public class ForeRestController {
         return order;
     }
 
+    @GetMapping("forebought")
+    public Object bought(HttpSession session) {
+        Users user =(Users)  session.getAttribute("user");
+        if(null==user)
+            return Result.fail("未登录");
+        List<Order> os= orderService.listByUserWithoutDelete(user);
+        orderService.removeOrderFromOrderItem(os);
+        return os;
+    }
+
+    @GetMapping("foreconfirmPay")
+    public Object confirmPay(int oid) {
+        Order o = orderService.get(oid);
+        orderItemService.fill(o);
+        orderService.cacl(o);
+        orderService.removeOrderFromOrderItem(o);
+        return o;
+    }
+
+
 }
