@@ -3,6 +3,7 @@ package com.mockingbird.Springbootcafe.service;
 import com.mockingbird.Springbootcafe.dao.OrderDAO;
 import com.mockingbird.Springbootcafe.pojo.Order;
 import com.mockingbird.Springbootcafe.pojo.OrderItem;
+import com.mockingbird.Springbootcafe.pojo.Users;
 import com.mockingbird.Springbootcafe.util.Page4Navigator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -75,6 +76,16 @@ public class OrderService {
             total+=oi.getProduct().getPromotePrice()*oi.getNumber();
         }
         return total;
+    }
+
+    public List<Order> listByUserWithoutDelete(Users user) {
+        List<Order> orders = listByUserAndNotDeleted(user);
+        orderItemService.fill(orders);
+        return orders;
+    }
+
+    public List<Order> listByUserAndNotDeleted(Users user) {
+        return orderDAO.findByUsersAndStatusNotOrderByIdDesc(user, OrderService.delete);
     }
 
 
