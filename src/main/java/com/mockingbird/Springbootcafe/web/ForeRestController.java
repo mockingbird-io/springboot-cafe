@@ -287,5 +287,14 @@ public class ForeRestController {
         return o;
     }
 
+    @GetMapping("foreorderConfirmed")
+    public Object orderConfirmed( int oid) {
+        Order o = orderService.get(oid);
+        o.setStatus(OrderService.waitReview);
+        o.setConfirmDate(new Date());
+        orderService.update(o);
+        return Result.success();
+    }
+
 
 }
