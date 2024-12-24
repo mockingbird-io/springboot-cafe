@@ -296,5 +296,13 @@ public class ForeRestController {
         return Result.success();
     }
 
+    @PutMapping("foredeleteOrder")
+    public Object deleteOrder(int oid){
+        Order o = orderService.get(oid);
+        o.setStatus(OrderService.delete);
+        orderService.update(o);
+        return Result.success();
+    }
+
 
 }

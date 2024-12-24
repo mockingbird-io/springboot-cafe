@@ -69,6 +69,15 @@
           }
         })
       }
+      var uri = "foredeleteOrder?oid="+deleteOrderid;
+      axios.put(uri).then(function(response){
+        if(0==response.data.code){
+          $("table.orderListItemTable[oid="+deleteOrderid+"]").hide();
+        }
+        else{
+          location.href="login";
+        }
+      });
     </script>
     <div class="boughtDiv">
         <div class="orderType">
