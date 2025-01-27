@@ -5,6 +5,12 @@ import com.mockingbird.Springbootcafe.pojo.*;
 import com.mockingbird.Springbootcafe.service.*;
 import com.mockingbird.Springbootcafe.util.Result;
 import org.apache.commons.lang.math.RandomUtils;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.crypto.SecureRandomNumberGenerator;
+import org.apache.shiro.crypto.hash.SimpleHash;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.HtmlUtils;
@@ -30,7 +36,7 @@ public class ForeRestController {
     ReviewService reviewService;
     @Resource
     OrderItemService orderItemService;
-    @Autowired
+    @Resource
     private OrderService orderService;
 
     @GetMapping("/forehome")
@@ -44,29 +50,48 @@ public class ForeRestController {
 
     @PostMapping("/foreregister")
     public Object register(@RequestBody Users users) {
-        String name = HtmlUtils.htmlEscape(users.getName());
+        String name =  users.getName();
+        String password = users.getPassword();
+        name = HtmlUtils.htmlEscape(name);
         users.setName(name);
+
         boolean exist = userService.isExist(name);
-        if (exist) {
-            String message = "用户名已经被使用,不能使用";
+
+        if(exist){
+            String message ="用户名已经被使用,不能使用";
             return Result.fail(message);
         }
+
+        String salt = new SecureRandomNumberGenerator().nextBytes().toString();
+        int times = 2;
+        String algorithmName = "md5";
+
+        String encodedPassword = new SimpleHash(algorithmName, password, salt, times).toString();
+
+        users.setSalt(salt);
+        users.setPassword(encodedPassword);
+
         userService.add(users);
+
         return Result.success();
     }
 
     @PostMapping("/forelogin")
     public Object login(@RequestBody Users userParam, HttpSession session) {
-        String name = userParam.getName();
+        String name =  userParam.getName();
         name = HtmlUtils.htmlEscape(name);
 
-        Users user = userService.get(name, userParam.getPassword());
-        if (user == null) {
-            String message = "账号密码错误";
-            return Result.fail(message);
-        } else {
+        Subject subject = SecurityUtils.getSubject();
+        UsernamePasswordToken token = new UsernamePasswordToken(name, userParam.getPassword());
+        try {
+            subject.login(token);
+            Users user = userService.getByName(name);
+//          subject.getSession().setAttribute("user", user);
             session.setAttribute("user", user);
             return Result.success();
+        } catch (AuthenticationException e) {
+            String message ="账号密码错误";
+            return Result.fail(message);
         }
     }
 
