@@ -6,6 +6,8 @@ import javax.servlet.http.HttpSession;
 
 import com.mockingbird.Springbootcafe.pojo.Users;
 import org.apache.commons.lang.StringUtils;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -45,8 +47,9 @@ public class LoginInterceptor implements HandlerInterceptor {
         String page = uri;
 
         if(begingWith(page, requireAuthPages)){
-            Users user = (Users) session.getAttribute("user");
-            if(user==null) {
+            Subject subject = SecurityUtils.getSubject();
+            // Users user = (Users) session.getAttribute("user");
+            if(!subject.isAuthenticated()) {
                 httpServletResponse.sendRedirect("login");
                 return false;
             }

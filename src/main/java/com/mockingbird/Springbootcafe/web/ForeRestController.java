@@ -95,6 +95,14 @@ public class ForeRestController {
         }
     }
 
+    @GetMapping("/forelogout")
+    public String logout( ) {
+        Subject subject = SecurityUtils.getSubject();
+        if(subject.isAuthenticated())
+            subject.logout();
+        return "redirect:home";
+    }
+
     @GetMapping("/foreproduct/{pid}")
     public Object product(@PathVariable Integer pid) {
         Product product = productService.get(pid);
@@ -119,11 +127,11 @@ public class ForeRestController {
 
     @GetMapping("forecheckLogin")
     public Object checkLogin(HttpSession session) {
-        Users user = (Users) session.getAttribute("user");
-        if (null != user) {
+        Subject subject = SecurityUtils.getSubject();
+        if(subject.isAuthenticated())
             return Result.success();
-        }
-        return Result.fail("未登录");
+        else
+            return Result.fail("未登录");
     }
 
     @GetMapping("forecategory/{cid}")
