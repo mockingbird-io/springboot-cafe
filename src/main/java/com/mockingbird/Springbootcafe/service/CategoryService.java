@@ -4,6 +4,9 @@ import java.util.List;
 
 import com.mockingbird.Springbootcafe.pojo.Product;
 import com.mockingbird.Springbootcafe.util.Page4Navigator;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -14,6 +17,7 @@ import com.mockingbird.Springbootcafe.dao.CategoryDAO;
 import com.mockingbird.Springbootcafe.pojo.Category;
 
 import javax.annotation.Resource;
+import javax.persistence.Cacheable;
 
 @Service
 public class CategoryService {

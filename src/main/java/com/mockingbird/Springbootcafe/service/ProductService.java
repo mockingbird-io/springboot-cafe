@@ -4,6 +4,9 @@ import com.mockingbird.Springbootcafe.dao.ProductDAO;
 import com.mockingbird.Springbootcafe.pojo.Category;
 import com.mockingbird.Springbootcafe.pojo.Product;
 import com.mockingbird.Springbootcafe.util.Page4Navigator;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -15,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@CacheConfig(cacheNames="products")
 public class ProductService {
     @Resource
     ProductDAO productDAO;
@@ -27,22 +31,27 @@ public class ProductService {
     @Resource
     ReviewService reviewService;
 
+    @CacheEvict(allEntries=true)
     public void add(Product product) {
         productDAO.save(product);
     }
 
+    @CacheEvict(allEntries=true)
     public void delete(int id) {
         productDAO.deleteById(id);
     }
 
+    @CacheEvict(allEntries=true)
     public void update(Product product) {
         productDAO.save(product);
     }
 
+    @Cacheable(key="'products-one-'+ #p0")
     public Product get(int id) {
         return productDAO.findById(id).orElse(null);
     }
 
+    @Cacheable(key="'products-cid-'+#p0+'-page-'+#p1 + '-' + #p2 ")
     public Page4Navigator<Product> list(int cid, int start, int count, int navigatePages) {
         Category category = categoryService.get(cid);
         Pageable pageable = PageRequest.of(start, count, Sort.by(Sort.Direction.DESC, "id"));
@@ -61,6 +70,11 @@ public class ProductService {
         productImageService.setFirstProductImages(products);
         category.setProducts(products);
 
+    }
+
+    @Cacheable(key="'products-cid-'+ #p0.id")
+    public List<Product> listByCategory(Category category){
+        return productDAO.findByCategoryOrderById(category);
     }
 
     public void fillByRow(List<Category> categoryList) {
