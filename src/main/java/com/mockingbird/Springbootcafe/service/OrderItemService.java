@@ -69,6 +69,8 @@ public class OrderItemService {
     public int getSaleCount(Product product) {
         List<OrderItem> ois =listByProduct(product);
         int result =0;
+
+
         for (OrderItem oi : ois) {
             if(null!=oi.getOrder())
                 if(null != oi.getOrder().getPayDate())
